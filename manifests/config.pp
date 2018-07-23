@@ -44,6 +44,14 @@ class pureftpd::config {
       }
     }
 
+    if $pureftpd::config_auth_puredb {
+      file { "${pureftpd::config_dir}/../auth/50pure":
+        ensure => 'link',
+        target => "${pureftpd::config_dir}/PureDB",
+        notify => Service['pureftpd']
+      }
+    }
+
     file { $pureftpd::defaults_file:
       ensure  => file,
       content => template('pureftpd/defaults.erb'),
