@@ -142,6 +142,18 @@ class pureftpd::config {
       }
 
     }
+
+    # Ensure that adm group can read FTP logs.
+    # Requires config_db_dir so that we know pureftp has been installed.
+    file { '/var/log/pure-ftpd' :
+      ensure  => directory,
+      owner   => 'root',
+      group   => 'adm',
+      mode    => '0644'
+      recurse => true,
+      require =>  File[$pureftpd::config_db_dir],
+    }
+
   }
 
   # manage self-signed ssl certificate if enabled
