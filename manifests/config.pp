@@ -149,9 +149,9 @@ class pureftpd::config {
       ensure  => directory,
       owner   => 'root',
       group   => 'adm',
-      mode    => '0644'
+      mode    => '0640',
       recurse => true,
-      require =>  File[$pureftpd::config_db_dir],
+      require => File[$pureftpd::config_db_dir],
     }
 
   }
