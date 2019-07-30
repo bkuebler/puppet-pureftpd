@@ -4,6 +4,7 @@ class pureftpd (
   $config_db_dir      = $pureftpd::params::config_db_dir,
   $config_dir         = $pureftpd::params::config_dir,
   $config_manage      = $pureftpd::params::config_manage,
+  $config_auth_puredb = false,
   $dir_aliases        = {},
   $dir_aliases_file   = $pureftpd::params::dir_aliases_file,
   $install_options    = undef,

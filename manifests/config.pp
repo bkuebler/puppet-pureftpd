@@ -44,6 +44,14 @@ class pureftpd::config {
       }
     }
 
+    if $pureftpd::config_auth_puredb {
+      file { "${pureftpd::config_dir}/../auth/50pure":
+        ensure => 'link',
+        target => "${pureftpd::config_dir}/PureDB",
+        notify => Service['pureftpd']
+      }
+    }
+
     file { $pureftpd::defaults_file:
       ensure  => file,
       content => template('pureftpd/defaults.erb'),
@@ -121,8 +129,10 @@ class pureftpd::config {
     # only notify service if we're managing the service and
     # service restart is enabled.
     if $pureftpd::restart and $pureftpd::service_manage {
-      File["pureftpd-config-${pureftpd::server_type}"] {
-        notify => Service['pureftpd']
+      if $pureftpd::server_type != 'default' {
+        File["pureftpd-config-${pureftpd::server_type}"] {
+          notify => Service['pureftpd']
+        }
       }
       File[$pureftpd::dir_aliases_file] {
         notify => Service['pureftpd']
@@ -132,6 +142,18 @@ class pureftpd::config {
       }
 
     }
+
+    # Ensure that adm group can read FTP logs.
+    # Requires config_db_dir so that we know pureftp has been installed.
+    file { '/var/log/pure-ftpd' :
+      ensure  => directory,
+      owner   => 'root',
+      group   => 'adm',
+      mode    => '0640',
+      recurse => true,
+      require => File[$pureftpd::config_db_dir],
+    }
+
   }
 
   # manage self-signed ssl certificate if enabled
