@@ -1,3 +1,6 @@
+> [!WARNING]
+> Due to the license change of puppet by percforce i decided not to continue any puppet coding or upcoming forks. Thanks for more than 10 years of puppet experience, now switched away to other open source configuration management tools.
+
 # puppet-pureftpd
 
 #### Table of Contents
